@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Typing Effect with File</title>
+  <style>
+    body {
+      background: #111;
+      color: #00ffcc;
+      font-family: monospace;
+      font-size: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0px;
+    }
+    #output {
+      border-right: 2px solid #00ffcc;
+      padding-right: 5px;
+      animation: blink 0.8s infinite;
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    .output{
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="output" class="output"></div>
+
+  <script>
+    const speed = 1;
+    let i = 0;
+    let text = "";
+
+    // pehle file load karo
+    fetch("page.text")
+      .then(response => response.text())
+      .then(data => {
+        text = data;
+        typeWriter(); // jab data mil jaye tab start karo
+      })
+      .catch(err => {
+        text = "Error agya: " + err;
+        typeWriter();
+      });
+
+    function typeWriter() {
+      if (i < text.length) {
+        const output = document.getElementById("output");
+        output.innerHTML += text.charAt(i);
+        output.scrollIntoView({ behavior: "smooth", block: "end" }); // 🔥 Auto-scroll
+        i++;
+        setTimeout(typeWriter, speed);
+      }
+    }
+  </script>
+</body>
+</html>
